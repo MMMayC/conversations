@@ -1,0 +1,19 @@
+{
+  "TableName": "dialogTable",
+  "KeySchema": [
+    {
+      "AttributeName": "dialogId",
+      "KeyType": "HASH"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "dialogId",
+      "AttributeType": "S"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

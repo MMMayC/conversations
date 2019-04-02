@@ -1,0 +1,19 @@
+{
+  "TableName": "directorTable",
+  "KeySchema": [
+    {
+      "AttributeName": "directorId",
+      "KeyType": "HASH"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "directorId",
+      "AttributeType": "S"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

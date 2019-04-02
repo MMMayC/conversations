@@ -1,24 +1,9 @@
-const path = require('path');
-module.exports = {
-  mode: 'none',
-  entry: {
-    client: './client/client.js',
-  },
-  output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: "[name].js"
-  },
-  module: {
-    rules: [
-      { 
-        test: /\.js$/, 
-        exclude: /node_modules/, 
-        loader: "babel-loader"
-      },
-      {
-        test:/\.(s*)css$/,
-        use:['style-loader','css-loader', 'sass-loader']
-      }
-    ]
- }
+switch (process.env.NODE_ENV) {
+  case 'prod':
+    module.exports = require('./config/webpack.prod');
+    break;
+
+  case 'dev':
+  default:
+    module.exports = require('./config/webpack.dev');
 }

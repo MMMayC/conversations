@@ -1,9 +1,14 @@
 
-const express = require('express'),
-app = express(),
-template = require('./views/template')
-path = require('path');
+const express = require('express');
+const app = express();
+const template = require('./views/template');
+const path = require('path');
+require('dotenv').config();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+require('./routes')(app);
 
 // Serving static files
 app.use('/public', express.static(path.resolve(__dirname, '../public')));
