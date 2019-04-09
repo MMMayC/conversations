@@ -103,15 +103,20 @@ module.exports = {
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { line, characterId } = req.body;
-    const dialogId = uuidv1().toString();
+    const dialogs = req.body;
     const docClient = new AWS.DynamoDB.DocumentClient();
+    let dialogItems = [];
+    // console.log('dialogs :', dialogs);
+    dialogs.forEach(dialog => {
+      dialogItems.push({
+        PutRequest: {
+          Item: dialog
+        }
+      });
+    });
     const params = {
-      TableName: config.aws_table_dialog,
-      Item: {
-        dialogId: dialogId,
-        line: line,
-        characterId: characterId
+      RequestItems: {
+        [config.aws_table_dialog]: dialogItems
       }
     };
     docClient.batchWrite(params, function(err, data) {
@@ -121,12 +126,10 @@ module.exports = {
           message: 'Error: Server error'
         });
       } else {
-        console.log('data', data);
-        const { Items } = data;
+        console.log('Added dialog batch');
         res.send({
           success: true,
-          message: 'Added dialog',
-          dialogId: dialogId
+          message: 'Added dialog batch'
         });
       }
     });

@@ -3,7 +3,8 @@ const fs = require('fs'),
       instream = fs.createReadStream('./data/bladerunner_dialog.txt'),
       outstream = new (require('stream'))(),
       rl = readline.createInterface(instream, outstream);
-  const uuidv1 = require('uuid/v1');
+const uuidv1 = require('uuid/v1');
+const axios = require('axios');
 
 module.exports = {
   processDialog: function() {
@@ -31,10 +32,10 @@ module.exports = {
             currentDialog = {
               dialogId: uuidv1().toString(),
               dialog: currentDialogLine,
-              characterId: lastCharacter.characterId,
-              prevId: prevDialog ? prevDialog.dialogId : ""
+              characterId: lastCharacter.characterId
             }
             if(prevDialog) {
+              currentDialog.prevId = prevDialog.dialogId;
               prevDialog.nextId = currentDialog.dialogId;
               dialogs.push(prevDialog);
             }
@@ -56,19 +57,33 @@ module.exports = {
       currentDialog = {
         dialogId: uuidv1().toString(),
         dialog: currentDialogLine,
-        characterId: lastCharacter.characterId,
-        prevId: prevDialog ? prevDialog.dialogId : ""
+        characterId: lastCharacter.characterId
       }
       if(prevDialog) {
+        currentDialog.prevId = prevDialog.dialogId;
         prevDialog.nextId = currentDialog.dialogId;
         dialogs.push(prevDialog);
       }
       dialogs.push(currentDialog);
       let charactersJson = JSON.stringify(characters);
-      fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
-        if (err) throw err;
-      });
+      // axios.post('/api/characters', charactersJson)
+      // .then(response => {
+      //   console.log(response);
+      // })
+      // .catch(error => {
+      //   console.log(error);
+      // });
+      // fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
+      //   if (err) throw err;
+      // });
       let dialogsJson = JSON.stringify(dialogs);
+      axios.post(`${process.env.BASE_URL}/api/dialogs`, dialogsJson)
+      .then(response => {
+        // console.log(response);
+      })
+      .catch(error => {
+        // console.log(error);
+      });
       fs.writeFile('./data/processed_bladerunner_dialogs.json', dialogsJson, err => {
         if (err) throw err;
       }); 

@@ -3,10 +3,13 @@ const express = require('express');
 const app = express();
 const template = require('./views/template');
 const path = require('path');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 require('./routes')(app);
 
