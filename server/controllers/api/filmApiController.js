@@ -52,7 +52,6 @@ module.exports = {
           message: 'Error: Server error'
         });
       } else {
-        console.log('data', data);
         const { Items } = data;
         res.send({
           success: true,
@@ -69,14 +68,16 @@ module.exports = {
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { name } = req.body;
+    const { filmTitle, filmYear, DirectorId } = req.body;
     const filmId = uuidv1().toString();
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_film,
       Item: {
         filmId: filmId,
-        filmName: name
+        filmTitle: filmTitle,
+        filmYear: filmYear,
+        DirectorId: DirectorId
       }
     };
     docClient.put(params, function(err, data) {

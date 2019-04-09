@@ -95,5 +95,38 @@ module.exports = {
         });
       }
     });
+  },
+  addDialogBatch: function(req, res, next) {
+    if (isDev) {
+      AWS.config.update(config.aws_dynamodb_local);
+    } else {
+      AWS.config.update(config.aws_dynamodb_remote);
+    }
+    const { name } = req.body;
+    const dialogId = uuidv1().toString();
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    const params = {
+      TableName: config.aws_table_dialog,
+      Item: {
+        dialogId: dialogId,
+        dialogName: name
+      }
+    };
+    docClient.batchWrite(params, function(err, data) {
+      if (err) {
+        res.send({
+          success: false,
+          message: 'Error: Server error'
+        });
+      } else {
+        console.log('data', data);
+        const { Items } = data;
+        res.send({
+          success: true,
+          message: 'Added dialog',
+          dialogId: dialogId
+        });
+      }
+    });
   }
 }

@@ -69,14 +69,14 @@ module.exports = {
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { name } = req.body;
+    const { characterName } = req.body;
     const characterId = uuidv1().toString();
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_character,
       Item: {
         characterId: characterId,
-        characterName: name
+        characterName: characterName
       }
     };
     docClient.put(params, function(err, data) {

@@ -69,14 +69,14 @@ module.exports = {
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { name } = req.body;
+    const { directorName } = req.body;
     const directorId = uuidv1().toString();
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_director,
       Item: {
         directorId: directorId,
-        directorName: name
+        directorName: directorName
       }
     };
     docClient.put(params, function(err, data) {
