@@ -37,43 +37,8 @@ res.setHeader('Cache-Control', 'assets, max-age=604800')
 res.send(response);
 });
 
-// const inputFile = require("../data/bladerunner_partial.txt");
-
 // process dialog file
-const fs = require('fs'),
-      readline = require('readline'),
-      instream = fs.createReadStream('./data/bladerunner_partial.txt'),
-      outstream = new (require('stream'))(),
-      rl = readline.createInterface(instream, outstream);
 
+const { processDialog } = require('./controllers/processController');
 
-function processDialog() {
-  const characterRegex = new RegExp(/^[A-Z]*$/);
-  let characters = [];
-  rl.on('line', function (line) {
-    if(line && characterRegex.test(line)) {
-    } else {
-      // currentDialog += ` ${line}`;
-    }
-  });
-  rl.on('close', line => {
-    console.log("close");
-    fs.readFile('./data/processed_bladerunner_characters.json', function (err, data) {
-      if (err){
-          console.log(err);
-      } else {
-        console.log('characters :', characters);
-        characters.push({
-          characterName: line
-        });
-        console.log('characters :', characters);
-        let charactersJson = JSON.stringify(characters);
-        console.log('charactersJson :', charactersJson);
-        fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, function (err) {
-          if (err) throw err;
-        }); 
-      }
-    });
-  });
-}
 processDialog();

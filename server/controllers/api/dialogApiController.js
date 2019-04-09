@@ -69,14 +69,15 @@ module.exports = {
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { name } = req.body;
+    const { line, characterId } = req.body;
     const dialogId = uuidv1().toString();
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_dialog,
       Item: {
         dialogId: dialogId,
-        dialogName: name
+        line: line,
+        characterId: characterId
       }
     };
     docClient.put(params, function(err, data) {
@@ -102,14 +103,15 @@ module.exports = {
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { name } = req.body;
+    const { line, characterId } = req.body;
     const dialogId = uuidv1().toString();
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_dialog,
       Item: {
         dialogId: dialogId,
-        dialogName: name
+        line: line,
+        characterId: characterId
       }
     };
     docClient.batchWrite(params, function(err, data) {
