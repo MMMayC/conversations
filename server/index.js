@@ -42,6 +42,5 @@ res.send(response);
 
 // process dialog file
 
-const { processDialog } = require('./controllers/processController');
-
-processDialog();
+// const { processDialog } = require('./controllers/processController');
+// processDialog();

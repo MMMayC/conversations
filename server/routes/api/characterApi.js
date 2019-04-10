@@ -1,4 +1,4 @@
-const { getCharacters, getCharacterById, addCharacter} = require('../../controllers/api/characterApiController')
+const { getCharacters, getCharacterById, addCharacter, addCharacterBatch } = require('../../controllers/api/characterApiController')
 
 module.exports = (app) => {
   // Gets all characters
@@ -7,4 +7,5 @@ module.exports = (app) => {
   app.get('/api/character', getCharacterById);
   // Add a character
   app.post('/api/character', addCharacter);
+  app.post('/api/characters', addCharacterBatch);
 };

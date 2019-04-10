@@ -95,5 +95,42 @@ module.exports = {
         });
       }
     });
+  },
+  addCharacterBatch: function(req, res, next) {
+    if (isDev) {
+      AWS.config.update(config.aws_dynamodb_local);
+    } else {
+      AWS.config.update(config.aws_dynamodb_remote);
+    }
+    const characters = req.body;
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    let characterItems = [];
+    characters.forEach(character => {
+      characterItems.push({
+        PutRequest: {
+          Item: character
+        }
+      });
+    });
+    const params = {
+      RequestItems: {
+        [config.aws_table_character]: characterItems
+      }
+    };
+    docClient.batchWrite(params, function(err, data) {
+      if (err) {
+        res.send({
+          success: false,
+          message: 'Error: Server error'
+        });
+      } else {
+        console.log('Added character batch');
+        res.send({
+          success: true,
+          message: 'Added character batch'
+        });
+      }
+    });
   }
+
 }

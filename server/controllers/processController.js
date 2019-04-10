@@ -1,10 +1,11 @@
 const fs = require('fs'),
       readline = require('readline'),
-      instream = fs.createReadStream('./data/bladerunner_dialog.txt'),
+      instream = fs.createReadStream('./data/bladerunner_partial.txt'),
       outstream = new (require('stream'))(),
       rl = readline.createInterface(instream, outstream);
 const uuidv1 = require('uuid/v1');
 const axios = require('axios');
+const filmId = 'df37cff0-59cf-11e9-b811-8596ee4eafbc';
 
 module.exports = {
   processDialog: function() {
@@ -15,7 +16,6 @@ module.exports = {
     let currentDialog = {};
     let dialogs = [];
     let currentDialogLine = "";
-    let currentDialogId = "";
     let firstLine = true;
     rl.on('line',  line => {
       if(line) { 
@@ -24,7 +24,8 @@ module.exports = {
           if(characters.findIndex(x => x.characterName === line) < 0) {
             characters.push({
               characterId: uuidv1().toString(),
-              characterName: line
+              characterName: line,
+              filmId: filmId
             });
           }
           // don't push the first line
@@ -54,6 +55,7 @@ module.exports = {
     rl.on('close', () => {
       // push the last line
       console.log("finished");
+
       currentDialog = {
         dialogId: uuidv1().toString(),
         dialog: currentDialogLine,
@@ -66,27 +68,27 @@ module.exports = {
       }
       dialogs.push(currentDialog);
       let charactersJson = JSON.stringify(characters);
-      // axios.post('/api/characters', charactersJson)
-      // .then(response => {
-      //   console.log(response);
-      // })
-      // .catch(error => {
-      //   console.log(error);
-      // });
-      // fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
-      //   if (err) throw err;
-      // });
-      let dialogsJson = JSON.stringify(dialogs);
-      axios.post(`${process.env.BASE_URL}/api/dialogs`, dialogsJson)
+      axios.post(`${process.env.BASE_URL}/api/characters`, characters)
       .then(response => {
-        // console.log(response);
+        console.log(response);
       })
       .catch(error => {
         // console.log(error);
       });
-      fs.writeFile('./data/processed_bladerunner_dialogs.json', dialogsJson, err => {
+      fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
         if (err) throw err;
-      }); 
+      });
+      let dialogsJson = JSON.stringify(dialogs);
+      axios.post(`${process.env.BASE_URL}/api/dialogs`, dialogs)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      // fs.writeFile('./data/processed_bladerunner_dialogs.json', dialogsJson, err => {
+      //   if (err) throw err;
+      // }); 
     });
   }
 }
