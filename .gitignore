@@ -64,4 +64,4 @@ typings/
 
 server/views
 
-assets/client.js
+public/client.js
