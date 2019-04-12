@@ -1,10 +1,10 @@
-const { getFilms, getFilmById, addFilm} = require('../../controllers/api/filmApiController')
+const { getFilms, getFilmById, addFilm } = require("../../models/api/film");
 
-module.exports = (app) => {
+module.exports = app => {
   // Gets all films
-  app.get('/api/films', getFilms);
+  app.get("/api/films", getFilms);
   // Get a single film by id
-  app.get('/api/film', getFilmById);
+  app.get("/api/film", getFilmById);
   // Add a film
-  app.post('/api/film', addFilm);
+  app.post("/api/film", addFilm);
 };

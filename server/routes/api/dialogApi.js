@@ -1,11 +1,16 @@
-const { getDialogs, getDialogById, addDialog, addDialogBatch } = require('../../controllers/api/dialogApiController')
+const {
+  getDialogs,
+  getDialogById,
+  addDialog,
+  addDialogBatch
+} = require("../../models/api/dialog");
 
-module.exports = (app) => {
+module.exports = app => {
   // Gets all dialogs
-  app.get('/api/dialogs', getDialogs);
+  app.get("/api/dialogs", getDialogs);
   // Get a single dialog by id
-  app.get('/api/dialog', getDialogById);
+  app.get("/api/dialog", getDialogById);
   // Add a dialog
-  app.post('/api/dialog', addDialog);
-  app.post('/api/dialogs', addDialogBatch);
+  app.post("/api/dialog", addDialog);
+  app.post("/api/dialogs", addDialogBatch);
 };

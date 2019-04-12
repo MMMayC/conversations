@@ -1,7 +1,7 @@
-const AWS = require('aws-sdk');
-const config = require('../../../config/dynamodb.config');
-const isDev = process.env.NODE_ENV !== 'production';
-const uuidv1 = require('uuid/v1');
+const AWS = require("aws-sdk");
+const config = require("../../../config/dynamodb.config");
+const isDev = process.env.NODE_ENV !== "production";
+const uuidv1 = require("uuid/v1");
 
 module.exports = {
   getDialogs: function(req, res, next) {
@@ -18,13 +18,13 @@ module.exports = {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Loaded dialogs',
+          message: "Loaded dialogs",
           dialogs: Items
         });
       }
@@ -40,29 +40,29 @@ module.exports = {
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_dialog,
-      KeyConditionExpression: 'dialogId = :i',
+      KeyConditionExpression: "dialogId = :i",
       ExpressionAttributeValues: {
-        ':i': dialogId
+        ":i": dialogId
       }
     };
     docClient.query(params, function(err, data) {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('data', data);
+        console.log("data", data);
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Loaded dialog',
+          message: "Loaded dialog",
           dialog: Items
         });
       }
     });
   },
-  
+
   addDialog: function(req, res, next) {
     if (isDev) {
       AWS.config.update(config.aws_dynamodb_local);
@@ -84,14 +84,14 @@ module.exports = {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('data', data);
+        console.log("data", data);
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Added dialog',
+          message: "Added dialog",
           dialogId: dialogId
         });
       }
@@ -123,15 +123,15 @@ module.exports = {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('Added dialog batch');
+        console.log("Added dialog batch");
         res.send({
           success: true,
-          message: 'Added dialog batch'
+          message: "Added dialog batch"
         });
       }
     });
   }
-}
+};

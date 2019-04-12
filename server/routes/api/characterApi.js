@@ -1,11 +1,16 @@
-const { getCharacters, getCharacterById, addCharacter, addCharacterBatch } = require('../../controllers/api/characterApiController')
+const {
+  getCharacters,
+  getCharacterById,
+  addCharacter,
+  addCharacterBatch
+} = require("../../models/api/character");
 
-module.exports = (app) => {
+module.exports = app => {
   // Gets all characters
-  app.get('/api/characters', getCharacters);
+  app.get("/api/characters", getCharacters);
   // Get a single character by id
-  app.get('/api/character', getCharacterById);
+  app.get("/api/character", getCharacterById);
   // Add a character
-  app.post('/api/character', addCharacter);
-  app.post('/api/characters', addCharacterBatch);
+  app.post("/api/character", addCharacter);
+  app.post("/api/characters", addCharacterBatch);
 };
