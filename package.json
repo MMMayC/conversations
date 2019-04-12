@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/MMMayC/conversations#readme",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "pack": "webpack --config webpack.config.js",
     "babel": "babel client -d server/views",
     "build": "npm run pack && npm run babel",
