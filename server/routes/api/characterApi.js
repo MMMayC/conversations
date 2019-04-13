@@ -3,7 +3,7 @@ const {
   getCharacterById,
   addCharacter,
   addCharacterBatch
-} = require("../../models/api/character");
+} = require("../../models/character");
 
 module.exports = app => {
   // Gets all characters

@@ -1,16 +1,11 @@
 const AWS = require("aws-sdk");
-const config = require("../../../config/dynamodb.config");
+const config = require("../../config/dynamodb.config");
 const isDev = process.env.NODE_ENV !== "production";
 const uuidv1 = require("uuid/v1");
-
+const { connectDB } = require("./connect");
 module.exports = {
   getDialogs: function(req, res, next) {
-    if (isDev) {
-      AWS.config.update(config.aws_dynamodb_local);
-    } else {
-      AWS.config.update(config.aws_dynamodb_remote);
-    }
-    const docClient = new AWS.DynamoDB.DocumentClient();
+    const docClient = connectDB();
     const params = {
       TableName: config.aws_table_dialog
     };
@@ -31,13 +26,8 @@ module.exports = {
     });
   },
   getDialogById: function(req, res, next) {
-    if (isDev) {
-      AWS.config.update(config.aws_dynamodb_local);
-    } else {
-      AWS.config.update(config.aws_dynamodb_remote);
-    }
     const dialogId = req.query.id;
-    const docClient = new AWS.DynamoDB.DocumentClient();
+    const docClient = connectDB();
     const params = {
       TableName: config.aws_table_dialog,
       KeyConditionExpression: "dialogId = :i",
@@ -64,14 +54,9 @@ module.exports = {
   },
 
   addDialog: function(req, res, next) {
-    if (isDev) {
-      AWS.config.update(config.aws_dynamodb_local);
-    } else {
-      AWS.config.update(config.aws_dynamodb_remote);
-    }
     const { line, characterId } = req.body;
     const dialogId = uuidv1().toString();
-    const docClient = new AWS.DynamoDB.DocumentClient();
+    const docClient = connectDB();
     const params = {
       TableName: config.aws_table_dialog,
       Item: {
@@ -98,13 +83,8 @@ module.exports = {
     });
   },
   addDialogBatch: function(req, res, next) {
-    if (isDev) {
-      AWS.config.update(config.aws_dynamodb_local);
-    } else {
-      AWS.config.update(config.aws_dynamodb_remote);
-    }
     const dialogs = req.body;
-    const docClient = new AWS.DynamoDB.DocumentClient();
+    const docClient = connectDB();
     let dialogItems = [];
     // console.log('dialogs :', dialogs);
     dialogs.forEach(dialog => {
@@ -133,5 +113,23 @@ module.exports = {
         });
       }
     });
+  },
+  getRandomDialog: function(req, res, next) {
+    const docClient = connectDB();
+    const randomId = uuidv1().toString();
+    const params = {
+      TableName: config.aws_table_dialog,
+      ProjectionExpression: "#yr, title, info.genres, info.actors[0]",
+      KeyConditionExpression:
+        "#yr = :yyyy and title between :letter1 and :letter2",
+      ExpressionAttributeNames: {
+        "#yr": "year"
+      },
+      ExpressionAttributeValues: {
+        ":yyyy": 1992,
+        ":letter1": "A",
+        ":letter2": "L"
+      }
+    };
   }
 };

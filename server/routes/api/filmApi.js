@@ -1,4 +1,4 @@
-const { getFilms, getFilmById, addFilm } = require("../../models/api/film");
+const { getFilms, getFilmById, addFilm } = require("../../models/film");
 
 module.exports = app => {
   // Gets all films

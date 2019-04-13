@@ -1,14 +1,14 @@
-const fs = require('fs'),
-      readline = require('readline'),
-      instream = fs.createReadStream('./data/bladerunner_partial.txt'),
-      outstream = new (require('stream'))(),
-      rl = readline.createInterface(instream, outstream);
-const uuidv1 = require('uuid/v1');
-const axios = require('axios');
-const filmId = 'df37cff0-59cf-11e9-b811-8596ee4eafbc';
+const fs = require("fs");
+const readline = require("readline");
+const stream = require("stream");
+const uuidv1 = require("uuid/v1");
+const axios = require("axios");
 
 module.exports = {
-  processDialog: function() {
+  processDialog: function(filePath, filmId) {
+    const instream = fs.createReadStream(filePath);
+    const outstream = new stream();
+    const rl = readline.createInterface(instream, outstream);
     const characterRegex = new RegExp(/^[A-Z '().]*$/);
     let characters = [];
     let lastCharacter = {};
@@ -17,11 +17,11 @@ module.exports = {
     let dialogs = [];
     let currentDialogLine = "";
     let firstLine = true;
-    rl.on('line',  line => {
-      if(line) { 
-        if(characterRegex.test(line)) {
+    rl.on("line", line => {
+      if (line) {
+        if (characterRegex.test(line)) {
           // when the line is a character
-          if(characters.findIndex(x => x.characterName === line) < 0) {
+          if (characters.findIndex(x => x.characterName === line) < 0) {
             characters.push({
               characterId: uuidv1().toString(),
               characterName: line,
@@ -29,13 +29,13 @@ module.exports = {
             });
           }
           // don't push the first line
-          if(!firstLine) {
+          if (!firstLine) {
             currentDialog = {
               dialogId: uuidv1().toString(),
               dialog: currentDialogLine,
               characterId: lastCharacter.characterId
-            }
-            if(prevDialog) {
+            };
+            if (prevDialog) {
               currentDialog.prevId = prevDialog.dialogId;
               prevDialog.nextId = currentDialog.dialogId;
               dialogs.push(prevDialog);
@@ -52,7 +52,7 @@ module.exports = {
         }
       }
     });
-    rl.on('close', () => {
+    rl.on("close", () => {
       // push the last line
       console.log("finished");
 
@@ -60,35 +60,37 @@ module.exports = {
         dialogId: uuidv1().toString(),
         dialog: currentDialogLine,
         characterId: lastCharacter.characterId
-      }
-      if(prevDialog) {
+      };
+      if (prevDialog) {
         currentDialog.prevId = prevDialog.dialogId;
         prevDialog.nextId = currentDialog.dialogId;
         dialogs.push(prevDialog);
       }
       dialogs.push(currentDialog);
       let charactersJson = JSON.stringify(characters);
-      axios.post(`${process.env.BASE_URL}/api/characters`, characters)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        // console.log(error);
-      });
-      fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
-        if (err) throw err;
-      });
+      axios
+        .post(`${process.env.BASE_URL}/api/characters`, characters)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          // console.log(error);
+        });
+      // fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
+      //   if (err) throw err;
+      // });
       let dialogsJson = JSON.stringify(dialogs);
-      axios.post(`${process.env.BASE_URL}/api/dialogs`, dialogs)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      axios
+        .post(`${process.env.BASE_URL}/api/dialogs`, dialogs)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
       // fs.writeFile('./data/processed_bladerunner_dialogs.json', dialogsJson, err => {
       //   if (err) throw err;
-      // }); 
+      // });
     });
   }
-}
+};

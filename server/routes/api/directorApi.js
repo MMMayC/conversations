@@ -2,7 +2,7 @@ const {
   getDirectors,
   getDirectorById,
   addDirector
-} = require("../../models/api/director");
+} = require("../../models/director");
 
 module.exports = app => {
   // Gets all directors

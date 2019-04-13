@@ -3,7 +3,7 @@ const {
   getDialogById,
   addDialog,
   addDialogBatch
-} = require("../../models/api/dialog");
+} = require("../../models/dialog");
 
 module.exports = app => {
   // Gets all dialogs

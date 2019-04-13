@@ -1,10 +1,10 @@
-const AWS = require('aws-sdk');
-const config = require('../../../config/dynamodb.config');
-const isDev = process.env.NODE_ENV !== 'production';
-const uuidv1 = require('uuid/v1');
+const AWS = require("aws-sdk");
+const config = require("../../config/dynamodb.config");
+const isDev = process.env.NODE_ENV !== "production";
+const uuidv1 = require("uuid/v1");
 
 module.exports = {
-  getFilms: function(req, res, next) {
+  getDirectors: function(req, res, next) {
     if (isDev) {
       AWS.config.update(config.aws_dynamodb_local);
     } else {
@@ -12,89 +12,88 @@ module.exports = {
     }
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
-      TableName: config.aws_table_film
+      TableName: config.aws_table_director
     };
     docClient.scan(params, function(err, data) {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Loaded films',
-          films: Items
+          message: "Loaded directors",
+          directors: Items
         });
       }
     });
   },
-  getFilmById: function(req, res, next) {
+  getDirectorById: function(req, res, next) {
     if (isDev) {
       AWS.config.update(config.aws_dynamodb_local);
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const filmId = req.query.id;
+    const directorId = req.query.id;
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
-      TableName: config.aws_table_film,
-      KeyConditionExpression: 'filmId = :i',
+      TableName: config.aws_table_director,
+      KeyConditionExpression: "directorId = :i",
       ExpressionAttributeValues: {
-        ':i': filmId
+        ":i": directorId
       }
     };
     docClient.query(params, function(err, data) {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
+        console.log("data", data);
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Loaded film',
-          film: Items
+          message: "Loaded director",
+          director: Items
         });
       }
     });
   },
-  
-  addFilm: function(req, res, next) {
+
+  addDirector: function(req, res, next) {
     if (isDev) {
       AWS.config.update(config.aws_dynamodb_local);
     } else {
       AWS.config.update(config.aws_dynamodb_remote);
     }
-    const { filmTitle, filmYear, DirectorId } = req.body;
-    const filmId = uuidv1().toString();
+    const { directorName } = req.body;
+    const directorId = uuidv1().toString();
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
-      TableName: config.aws_table_film,
+      TableName: config.aws_table_director,
       Item: {
-        filmId: filmId,
-        filmTitle: filmTitle,
-        filmYear: filmYear,
-        DirectorId: DirectorId
+        directorId: directorId,
+        directorName: directorName
       }
     };
     docClient.put(params, function(err, data) {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('data', data);
+        console.log("data", data);
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Added film',
-          filmId: filmId
+          message: "Added director",
+          directorId: directorId
         });
       }
     });
   }
-}
+};

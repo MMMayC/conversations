@@ -1,7 +1,7 @@
-const AWS = require('aws-sdk');
-const config = require('../../../config/dynamodb.config');
-const isDev = process.env.NODE_ENV !== 'production';
-const uuidv1 = require('uuid/v1');
+const AWS = require("aws-sdk");
+const config = require("../../config/dynamodb.config");
+const isDev = process.env.NODE_ENV !== "production";
+const uuidv1 = require("uuid/v1");
 
 module.exports = {
   getCharacters: function(req, res, next) {
@@ -18,13 +18,13 @@ module.exports = {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Loaded characters',
+          message: "Loaded characters",
           characters: Items
         });
       }
@@ -40,29 +40,29 @@ module.exports = {
     const docClient = new AWS.DynamoDB.DocumentClient();
     const params = {
       TableName: config.aws_table_character,
-      KeyConditionExpression: 'characterId = :i',
+      KeyConditionExpression: "characterId = :i",
       ExpressionAttributeValues: {
-        ':i': characterId
+        ":i": characterId
       }
     };
     docClient.query(params, function(err, data) {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('data', data);
+        console.log("data", data);
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Loaded character',
+          message: "Loaded character",
           character: Items
         });
       }
     });
   },
-  
+
   addCharacter: function(req, res, next) {
     if (isDev) {
       AWS.config.update(config.aws_dynamodb_local);
@@ -83,14 +83,14 @@ module.exports = {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('data', data);
+        console.log("data", data);
         const { Items } = data;
         res.send({
           success: true,
-          message: 'Added character',
+          message: "Added character",
           characterId: characterId
         });
       }
@@ -121,16 +121,15 @@ module.exports = {
       if (err) {
         res.send({
           success: false,
-          message: 'Error: Server error'
+          message: "Error: Server error"
         });
       } else {
-        console.log('Added character batch');
+        console.log("Added character batch");
         res.send({
           success: true,
-          message: 'Added character batch'
+          message: "Added character batch"
         });
       }
     });
   }
-
-}
+};
