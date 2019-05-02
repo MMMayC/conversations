@@ -1,0 +1,50 @@
+{
+  "TableName": "dialogs",
+  "KeySchema": [
+    {
+      "AttributeName": "dialogId",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "filmId",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "dialogId",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "filmId",
+      "AttributeType": "N"
+    }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "directors",
+      "KeySchema": [
+        {
+          "AttributeName": "directorId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "filmId",
+          "KeyType": "HASH"
+        }
+      ],
+      "Projection": {
+        "NonKeyAttributes": ["string"],
+        "ProjectionType": "string"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      }
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

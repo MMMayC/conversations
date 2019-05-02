@@ -1,3 +1,27 @@
+<b><!--
+
+</b>if (window!= top)
+
+top.location.href=location.href
+
+<b>// -->
+
+</b>
+
+Blade Runner - By Hampton Fancher
+
+BLADE RUNNER
+
+Screenplay by
+
+HAMPTON FANCHER
+
+1420 No. Beachwood Drive
+
+Hollywood, Calif. 90028
+
+****************
+
 LEON
 
 Okay if I talk?
@@ -4010,7 +4034,7 @@ RACHAEL
 
 You know what else I think?
 
-DECKARD
+DECAKRD
 
 What?
 
@@ -4389,4 +4413,6 @@ her as I'd ever come to it.  She'd
 stay with me a long time.  I guess
 
 we made each other real.
+
+THE END
 
