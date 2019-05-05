@@ -1,21 +1,3 @@
-<b><!--
-
-</b>if (window!= top)
-
-top.location.href=location.href
-
-<b>// -->
-
-</b>
-
-Ten Things I Hate About You - by Karen McCullah Lutz & Kirsten Smith
-
-TEN THINGS I HATE ABOUT YOU
-
-written by Karen McCullah Lutz & Kirsten Smith
-
-based on 'Taming of the Shrew" by William Shakespeare
-
 RIDER
 
 Hey -- sorry.
@@ -24,7 +6,9 @@ KAT
 
 Leave it
 
-KAT (continuing)
+KAT
+
+(continuing)
 
 I said, leave it!
 

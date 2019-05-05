@@ -56,41 +56,41 @@ module.exports = {
       // push the last line
       console.log("finished");
 
-      currentDialog = {
-        dialogId: uuidv1().toString(),
-        dialog: currentDialogLine,
-        characterId: lastCharacter.characterId
-      };
-      if (prevDialog) {
-        currentDialog.prevId = prevDialog.dialogId;
-        prevDialog.nextId = currentDialog.dialogId;
-        dialogs.push(prevDialog);
-      }
-      dialogs.push(currentDialog);
-      let charactersJson = JSON.stringify(characters);
-      axios
-        .post(`${process.env.BASE_URL}/api/characters`, characters)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          // console.log(error);
-        });
-      // fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
-      //   if (err) throw err;
-      // });
-      let dialogsJson = JSON.stringify(dialogs);
-      axios
-        .post(`${process.env.BASE_URL}/api/dialogs`, dialogs)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      // fs.writeFile('./data/processed_bladerunner_dialogs.json', dialogsJson, err => {
-      //   if (err) throw err;
-      // });
+      // currentDialog = {
+      //   dialogId: uuidv1().toString(),
+      //   dialog: currentDialogLine,
+      //   characterId: lastCharacter.characterId
+      // };
+      // if (prevDialog) {
+      //   currentDialog.prevId = prevDialog.dialogId;
+      //   prevDialog.nextId = currentDialog.dialogId;
+      //   dialogs.push(prevDialog);
+      // }
+      // dialogs.push(currentDialog);
+      // let charactersJson = JSON.stringify(characters);
+      // axios
+      //   .post(`${process.env.BASE_URL}/api/characters`, characters)
+      //   .then(response => {
+      //     console.log(response);
+      //   })
+      //   .catch(error => {
+      //     // console.log(error);
+      //   });
+      // // fs.writeFile('./data/processed_bladerunner_characters.json', charactersJson, err => {
+      // //   if (err) throw err;
+      // // });
+      // let dialogsJson = JSON.stringify(dialogs);
+      // axios
+      //   .post(`${process.env.BASE_URL}/api/dialogs`, dialogs)
+      //   .then(response => {
+      //     console.log(response);
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+      // // fs.writeFile('./data/processed_bladerunner_dialogs.json', dialogsJson, err => {
+      // //   if (err) throw err;
+      // // });
     });
   }
 };

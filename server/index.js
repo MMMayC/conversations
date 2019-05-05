@@ -39,5 +39,19 @@ app.get("/", (req, res) => {
   res.send(response);
 });
 
-const { processDialogsByFilm } = require("./controllers/processDialogsByFilm");
-processDialogsByFilm("data/bladerunner_partial.txt");
+// const { processDialogsByFilm } = require("./controllers/processDialogsByFilm");
+// processDialogsByFilm("data/bladerunner_partial.txt", {
+//   title: "10 Things I Hate About You",
+//   director: "Gil Junger",
+//   year: 1999
+// });
+
+// const { processDialog } = require("./controllers/processDialog");
+
+// processDialog("data/raw/10thingsihateaboutyou_dialog.txt", "dfsd");
+
+const { getDialogs, getRandomDialog } = require("./models/dialogs");
+
+// getDialogs();
+
+getRandomDialog();
