@@ -38,3 +38,6 @@ app.get("/", (req, res) => {
   res.setHeader("Cache-Control", "assets, max-age=604800");
   res.send(response);
 });
+
+const { processDialogsByFilm } = require("./controllers/processDialogsByFilm");
+processDialogsByFilm("data/bladerunner_partial.txt");

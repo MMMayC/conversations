@@ -2,11 +2,11 @@
   "TableName": "dialogs",
   "KeySchema": [
     {
-      "AttributeName": "dialogId",
+      "AttributeName": "filmId",
       "KeyType": "HASH"
     },
     {
-      "AttributeName": "filmId",
+      "AttributeName": "dialogId",
       "KeyType": "RANGE"
     }
   ],
@@ -18,24 +18,28 @@
     {
       "AttributeName": "filmId",
       "AttributeType": "N"
+    },
+    {
+      "AttributeName": "film",
+      "AttributeType": "S"
     }
   ],
   "GlobalSecondaryIndexes": [
     {
-      "IndexName": "directors",
+      "IndexName": "films",
       "KeySchema": [
         {
-          "AttributeName": "directorId",
+          "AttributeName": "film",
           "KeyType": "HASH"
         },
         {
           "AttributeName": "filmId",
-          "KeyType": "HASH"
+          "KeyType": "RANGE"
         }
       ],
       "Projection": {
-        "NonKeyAttributes": ["string"],
-        "ProjectionType": "string"
+        "NonKeyAttributes": ["director", "year"],
+        "ProjectionType": "INCLUDE"
       },
       "ProvisionedThroughput": {
         "ReadCapacityUnits": 5,

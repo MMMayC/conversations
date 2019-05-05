@@ -1,12 +1,13 @@
 module.exports = {
-  aws_table_character: 'characterTable',
-  aws_table_dialog: 'dialogTable',
-  aws_table_director: 'directorTable',
-  aws_table_film: 'filmTable',
+  aws_table_character: "characterTable",
+  aws_table_dialog: "dialogTable",
+  aws_table_dialogs: "dialogs",
+  aws_table_director: "directorTable",
+  aws_table_film: "filmTable",
+  aws_dialogs_index_films: "films",
   aws_dynamodb_local: {
-    region: 'local',
-    endpoint: 'http://localhost:8000'
+    region: "local",
+    endpoint: "http://localhost:8000"
   },
-  aws_dynamodb_remote: {
-  }
+  aws_dynamodb_remote: {}
 };
