@@ -4,6 +4,7 @@ const isDev = process.env.NODE_ENV !== "production";
 const uuidv1 = require("uuid/v1");
 const { connectDB } = require("./connect");
 const uuidv4 = require("uuid/v4");
+const fs = require("fs");
 
 module.exports = {
   getDialogs: function() {
@@ -17,6 +18,10 @@ module.exports = {
       } else {
         const { Items } = data;
         console.log("Items :", Items);
+        const jsonString = JSON.stringify(Items);
+        // fs.writeFile("./data/database.json", jsonString, err => {
+        //   if (err) throw err;
+        // });
       }
     });
   },
@@ -31,14 +36,23 @@ module.exports = {
     //   ProjectionExpression: "filmId, dialogId, dialog",
     //   TableName: config.aws_table_dialogs
     // };
+    const random = uuidv4();
+    console.log("random :", random);
     const params = {
       TableName: config.aws_table_dialogs,
-      HashKeyValue: { S: "100000" },
-      RangeKeyCondition: {
-        AttributeValueList: {
-          S: "100000-3789c237-4ba1-48e9-b6cc-61a398175275"
+      KeyConditions: {
+        filmId: {
+          AttributeValueList: {
+            N: 100002
+          },
+          ComparisonOperator: "EQ"
         },
-        ComparisonOperator: "GT"
+        dialogId: {
+          AttributeValueList: {
+            S: random
+          },
+          ComparisonOperator: "GT"
+        }
       },
       Limit: 1,
       ScanIndexForward: false
@@ -81,11 +95,14 @@ module.exports = {
   addDialogsBatch: function(dialogs) {
     const docClient = connectDB();
     let dialogItems = [];
-    // console.log('dialogs :', dialogs);
     dialogs.forEach(dialog => {
+      let dialogItem = {};
+      Object.keys(dialog).map(key => {
+        dialogItem[key] = { S: dialog[key] };
+      });
       dialogItems.push({
         PutRequest: {
-          Item: dialog
+          Item: dialogItem
         }
       });
     });
@@ -94,9 +111,9 @@ module.exports = {
         [config.aws_table_dialogs]: dialogItems
       }
     };
-    docClient.batchWrite(params, function(err, data) {
+    docClient.batchWriteItem(params, function(err, data) {
       if (err) {
-        console.log("err:", err);
+        console.log("err: ", err);
       } else {
         console.log("Added dialog batch");
       }

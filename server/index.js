@@ -10,7 +10,7 @@ require("dotenv").config();
 app.use(bodyParser.json({ limit: "10mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
-require("./routes")(app);
+// require("./routes")(app);
 
 // Serving static files
 app.use("/public", express.static(path.resolve(__dirname, "../public")));
@@ -39,19 +39,53 @@ app.get("/", (req, res) => {
   res.send(response);
 });
 
-// const { processDialogsByFilm } = require("./controllers/processDialogsByFilm");
-// processDialogsByFilm("data/bladerunner_partial.txt", {
-//   title: "10 Things I Hate About You",
-//   director: "Gil Junger",
-//   year: 1999
+const { processDialogsByFilm } = require("./controllers/processDialogsByFilm");
+
+processDialogsByFilm("data/raw/10thingsihateaboutyou_dialog.txt", {
+  title: "10 Things I Hate About You",
+  director: "Gil Junger",
+  year: "1999"
+});
+// processDialogsByFilm("data/raw/bladerunner_dialog.txt", {
+//   title: "Blade Runner",
+//   director: "Ridley Scott",
+//   year: "1982"
 // });
 
 // const { processDialog } = require("./controllers/processDialog");
 
 // processDialog("data/raw/10thingsihateaboutyou_dialog.txt", "dfsd");
 
-const { getDialogs, getRandomDialog } = require("./models/dialogs");
+const {
+  getDialogs,
+  getRandomDialog,
+  addDialogsBatch
+} = require("./models/dialogs");
 
 // getDialogs();
 
-getRandomDialog();
+// getRandomDialog();
+
+// addDialogsBatch([
+//   {
+//     dialogId: "74af49f8-b0c5-475e-8d91-830c784e33e3",
+//     dialog: "Leave it",
+//     character: "KAT",
+//     filmId: "100000",
+//     film: "10 Things I Hate About You",
+//     director: "Gil Junger",
+//     year: "1999",
+//     prevId: "812cc425-e9d7-4ac6-aaa9-e1a84cf44c4d",
+//     nextId: "428c0168-6e49-41ca-acdc-37217c7b9df9"
+//   }
+// ]);
+
+const { getNumOfFilms } = require("./models/films");
+
+// getNumOfFilms().then(console.log);
+
+const { createDialogsTable, deleteDialogsTable } = require("./models/db");
+
+// createDialogsTable();
+
+// deleteDialogsTable();

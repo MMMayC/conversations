@@ -6,7 +6,13 @@ const axios = require("axios");
 const { getNumOfFilms } = require("../models/films");
 const { addDialogsBatch } = require("../models/dialogs");
 const sanitiseLine = line => {
-  return line.replace(new RegExp(/  /gi), " ").substring(0, line.length - 1);
+  const parenthesisRegex = new RegExp(/(?=\().+?(?<=\))/g);
+  const spacesRegex = new RegExp(/[ ]{2,}/g);
+  // remove all the content in parenthesis
+  line = line.replace(parenthesisRegex, "");
+  // replace more than 1 space with just 1 space
+  line = line.replace(spacesRegex, " ");
+  return line;
 };
 const sanitiseCharacter = character => {
   if (character.indexOf("(") > -1) {
@@ -16,7 +22,8 @@ const sanitiseCharacter = character => {
 };
 
 exports.processDialogsByFilm = async (filePath, filmInfo) => {
-  const filmId = (await getNumOfFilms()) + 100000;
+  // const filmId = (await getNumOfFilms()) + 100000;
+  const filmId = "100000";
   const instream = fs.createReadStream(filePath);
   const outstream = new stream();
   const rl = readline.createInterface(instream, outstream);
@@ -46,6 +53,10 @@ exports.processDialogsByFilm = async (filePath, filmInfo) => {
             currentDialog.prevId = prevDialog.dialogId;
             prevDialog.nextId = currentDialog.dialogId;
             dialogs.push(prevDialog);
+            if (dialogs.length > 20) {
+              addDialogsBatch(dialogs);
+              dialogs = [];
+            }
           }
           prevDialog = currentDialog;
         } else {
@@ -53,7 +64,6 @@ exports.processDialogsByFilm = async (filePath, filmInfo) => {
         }
         currentCharacter = sanitiseCharacter(line);
         currentLine = "";
-        console.log("currentCharacter :", currentCharacter);
       } else {
         // when the line is a dialog
         currentLine += `${line} `;
@@ -64,7 +74,7 @@ exports.processDialogsByFilm = async (filePath, filmInfo) => {
     // push the last line
     currentLine = sanitiseLine(currentLine);
     currentDialog = {
-      dialogId: `${filmId}-${uuidv4()}`,
+      dialogId: uuidv4(),
       dialog: currentLine,
       character: currentCharacter,
       filmId: filmId,
@@ -78,8 +88,12 @@ exports.processDialogsByFilm = async (filePath, filmInfo) => {
       dialogs.push(prevDialog);
     }
     dialogs.push(currentDialog);
-    console.log("dialogs :", dialogs);
+    // console.log("dialogs :", dialogs);
     console.log("finished");
     addDialogsBatch(dialogs);
+    // const dialogsJson = JSON.stringify(dialogs);
+    // fs.writeFile("./data/processed_file.json", dialogsJson, err => {
+    //   if (err) throw err;
+    // });
   });
 };

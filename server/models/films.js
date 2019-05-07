@@ -11,7 +11,8 @@ exports.getNumOfFilms = () => {
   const docClient = new AWS.DynamoDB.DocumentClient();
   const params = {
     TableName: config.aws_table_dialogs,
-    IndexName: config.aws_dialogs_index_films
+    IndexName: config.aws_dialogs_index_films,
+    ProjectionExpression: "film, filmId, director"
   };
   return new Promise((resolve, reject) => {
     docClient.scan(params, (err, data) => {
@@ -19,6 +20,7 @@ exports.getNumOfFilms = () => {
         resolve("error: " + err);
       } else {
         resolve(data.Count);
+        console.log(data.Count);
       }
     });
   });
