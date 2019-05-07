@@ -46,11 +46,11 @@ const { processDialogsByFilm } = require("./controllers/processDialogsByFilm");
 //   director: "Gil Junger",
 //   year: "1999"
 // });
-processDialogsByFilm("data/raw/bladerunner_dialog.txt", {
-  title: "Blade Runner",
-  director: "Ridley Scott",
-  year: "1982"
-});
+// processDialogsByFilm("data/raw/bladerunner_dialog.txt", {
+//   title: "Blade Runner",
+//   director: "Ridley Scott",
+//   year: "1982"
+// });
 
 // const { processDialog } = require("./controllers/processDialog");
 
