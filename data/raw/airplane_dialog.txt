@@ -1,15 +1,3 @@
-AIRPLANE
-
-Written by
-
-Jim Abrahams, David Zucker & Jerry Zucker
-
-SHOOTING SCRIPT
-
-June 11, 1979
-
-Revised 6/15/79
-
 P.A. SYSTEM (female v.o.)
 
 The white zone is for immediate loading

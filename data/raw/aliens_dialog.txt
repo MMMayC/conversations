@@ -3,27 +3,6 @@
 </b>if (window!= top)
 
 top.location.href=location.href
-
-<b>// -->
-
-</b>
-
-Aliens - by James Cameron
-
-"ALIENS"
-
-by
-
-James Cameron
-
-FIRST DRAFT
-
-May 28, 1985
-
------------------------------------------------------------------------------
-
-ALIENS
-
 LEADER
 
 (filtered)
