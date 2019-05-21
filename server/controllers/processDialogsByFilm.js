@@ -23,8 +23,6 @@ const sanitiseCharacter = character => {
 };
 
 exports.processDialogsByFilm = async (filePath, filmInfo) => {
-  // const filmId = (await getNumOfFilms()) + 100000;
-  const filmId = "100001";
   const instream = fs.createReadStream(filePath);
   const outstream = new stream();
   const rl = readline.createInterface(instream, outstream);
@@ -42,10 +40,10 @@ exports.processDialogsByFilm = async (filePath, filmInfo) => {
         if (!isFirstLine) {
           currentLine = sanitiseLine(currentLine);
           currentDialog = {
-            dialogId: `${filmId}-${uuidv4()}`,
-            dialog: currentLine,
-            character: currentCharacter,
-            filmId: filmId,
+            dialogId: `${filmInfo.id}-${uuidv4()}`,
+            dialog: currentLine ? currentLine : "null",
+            character: currentCharacter ? currentCharacter : "n/a",
+            filmId: filmInfo.id,
             film: filmInfo.title,
             director: filmInfo.director,
             year: filmInfo.year
@@ -75,10 +73,10 @@ exports.processDialogsByFilm = async (filePath, filmInfo) => {
     // push the last line
     currentLine = sanitiseLine(currentLine);
     currentDialog = {
-      dialogId: uuidv4(),
+      dialogId: `${filmInfo.id}-${uuidv4()}`,
       dialog: currentLine,
       character: currentCharacter,
-      filmId: filmId,
+      filmId: filmInfo.id,
       film: filmInfo.title,
       director: filmInfo.director,
       year: filmInfo.year

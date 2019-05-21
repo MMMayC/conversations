@@ -1,0 +1,27 @@
+{
+  "TableName": "films",
+  "KeySchema": [
+    {
+      "AttributeName": "film",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "filmId",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "film",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "filmId",
+      "AttributeType": "N"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

@@ -1,12 +1,15 @@
+const serverless = require("serverless-http");
 const express = require("express");
 const app = express();
 const template = require("./views/template");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
+app.use(cors());
 app.use(bodyParser.json({ limit: "10mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
@@ -89,3 +92,5 @@ const { createDialogsTable, deleteDialogsTable } = require("./models/db");
 // createDialogsTable();
 
 // deleteDialogsTable();
+
+module.exports.handler = serverless(app);
